@@ -20,23 +20,23 @@ public final class RedisStringCache implements IRedisCache<String, String> {
         cache = new HashMap<String, String>();
     }
 
-    @Override public Boolean exists(final String key) {
+    public Boolean exists(final String key) {
         return cache.containsKey(key);
     }
 
-    @Override public void remove(final String key) {
+    public void remove(final String key) {
         cache.remove(key);
     }
 
-    @Override public void set(final String key, final String value, final Object ... arguments) {
+    public void set(final String key, final String value, final Object... arguments) {
         cache.put(key, value);
     }
 
-    @Override public String get(final String key) {
+    public String get(final String key) {
         return cache.get(key);
     }
 
-    @Override public Boolean removeValue(final String key, final String value) {
+    public Boolean removeValue(final String key, final String value) {
         if (!exists(key)) {
             return false;
         }
@@ -47,8 +47,7 @@ public final class RedisStringCache implements IRedisCache<String, String> {
         return false;
     }
 
-    @Override public String type() {
+    public String type() {
         return "string";
     }
-
 }

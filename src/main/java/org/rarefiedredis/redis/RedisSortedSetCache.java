@@ -29,7 +29,7 @@ public final class RedisSortedSetCache implements IRedisCache<String, Set<String
         scores = new HashMap<String, Map<String, Double>>();
     }
 
-    @Override public Boolean exists(final String key) {
+    public Boolean exists(final String key) {
         return cache.containsKey(key);
     }
 
@@ -37,44 +37,44 @@ public final class RedisSortedSetCache implements IRedisCache<String, Set<String
         return exists(key) && cache.get(key).contains(value);
     }
 
-    @Override public void remove(final String key) {
+    public void remove(final String key) {
         cache.remove(key);
         scores.remove(key);
     }
 
-    @Override public void set(final String key, final String value, final Object ... arguments) {
+    public void set(final String key, final String value, final Object... arguments) {
         if (!cache.containsKey(key)) {
             cache.put(key, new TreeSet<String>(new Comparator<String>() {
-                        @Override public int compare(String a, String b) {
-                            Double aScore = scores.get(key).get(a);
-                            Double bScore = scores.get(key).get(b);
-                            if (aScore == null && bScore == null) {
-                                return 0;
-                            }
-                            if (aScore == null && bScore != null) {
-                                return 1;
-                            }
-                            if (aScore != null && bScore == null) {
-                                return -1;
-                            }
-                            if (aScore < bScore) {
-                                return -1;
-                            }
-                            if (aScore > bScore) {
-                                return 1;
-                            }
-                            return a.compareTo(b);
-                        }
-                    }));
+                public int compare(String a, String b) {
+                    Double aScore = scores.get(key).get(a);
+                    Double bScore = scores.get(key).get(b);
+                    if (aScore == null && bScore == null) {
+                        return 0;
+                    }
+                    if (aScore == null && bScore != null) {
+                        return 1;
+                    }
+                    if (aScore != null && bScore == null) {
+                        return -1;
+                    }
+                    if (aScore < bScore) {
+                        return -1;
+                    }
+                    if (aScore > bScore) {
+                        return 1;
+                    }
+                    return a.compareTo(b);
+                }
+            }));
             scores.put(key, new HashMap<String, Double>());
         }
-        Double score = (Double)arguments[0];
+        Double score = (Double) arguments[0];
         // The order of operations is important here.
         scores.get(key).put(value, score);
         cache.get(key).add(value);
     }
 
-    @Override public Set<String> get(final String key) {
+    public Set<String> get(final String key) {
         return cache.get(key);
     }
 
@@ -85,7 +85,7 @@ public final class RedisSortedSetCache implements IRedisCache<String, Set<String
         return scores.get(key).get(value);
     }
 
-    @Override public Boolean removeValue(final String key, final String value) {
+    public Boolean removeValue(final String key, final String value) {
         if (!cache.containsKey(key)) {
             return false;
         }
@@ -95,7 +95,7 @@ public final class RedisSortedSetCache implements IRedisCache<String, Set<String
         return rem;
     }
 
-    @Override public String type() {
+    public String type() {
         return "zset";
     }
 

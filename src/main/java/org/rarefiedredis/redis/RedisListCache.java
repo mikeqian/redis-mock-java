@@ -13,15 +13,15 @@ public final class RedisListCache implements IRedisCache<String, List<String>> {
         cache = new HashMap<String, List<String>>();
     }
 
-    @Override public Boolean exists(String key) {
+     public Boolean exists(String key) {
         return cache.containsKey(key);
     }
 
-    @Override public void remove(String key) {
+     public void remove(String key) {
         cache.remove(key);
     }
 
-    @Override public void set(String key, String value, Object ... arguments) {
+     public void set(String key, String value, Object ... arguments) {
         if (!cache.containsKey(key)) {
             cache.put(key, new LinkedList<String>());
         }
@@ -33,18 +33,18 @@ public final class RedisListCache implements IRedisCache<String, List<String>> {
         }
     }
 
-    @Override public List<String> get(String key) {
+     public List<String> get(String key) {
         return cache.get(key);
     }
 
-    @Override public Boolean removeValue(String key, String value) {
+     public Boolean removeValue(String key, String value) {
         if (!exists(key)) {
             return false;
         }
         return cache.get(key).remove(value);
     }
 
-    @Override public String type() {
+     public String type() {
         return "list";
     }
 

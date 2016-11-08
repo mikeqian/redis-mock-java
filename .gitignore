@@ -16,3 +16,6 @@ hs_err_pid*
 
 # Ignore settings.xml
 settings.xml
+/.idea
+/target
+/*.iml
